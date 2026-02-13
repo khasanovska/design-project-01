@@ -1,0 +1,37 @@
+name: Deploy to Yandex Object Storage
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Install AWS CLI
+        run: pip install awscli
+
+      - name: Deploy to Object Storage
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 sync dist/ s3://design-projects/ \
+            --endpoint-url https://storage.yandexcloud.net \
+            --delete \
+            --acl public-read
+          aws s3 cp dist/index.html s3://design-projects/index.html \
+            --endpoint-url https://storage.yandexcloud.net \
+            --acl public-read \
+            --content-type "text/html; charset=utf-8" \
+            --cache-control "no-cache, no-store, must-revalidate"
