@@ -265,7 +265,7 @@ export default function App() {
                   className="bg-black hover:bg-gray-800 text-white"
                 >
                   {isExporting
-                    ? "Эксортирую..."
+                    ? "Экспортирую..."
                     : screenshots.length > 1
                       ? `Экспортировать всё (${screenshots.length})`
                       : "Экспорт"}
@@ -296,7 +296,7 @@ export default function App() {
                 <Upload className="w-12 h-12 text-gray-400" />
               </div>
               <h2 className="text-lg font-medium text-gray-900 mb-2">
-                Загузи скриншоты, чтобы начать
+                Загрузи скриншоты, чтобы начать
               </h2>
               <p className="text-sm text-gray-500 mb-6">
                 Скриншотница автоматически оформит их в стиле
